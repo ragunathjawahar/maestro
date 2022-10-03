@@ -11,6 +11,7 @@ import io.grpc.stub.StreamObserver
 import maestro_android.MaestroAndroid
 import maestro_android.MaestroDriverGrpc
 import maestro_android.deviceInfo
+import maestro_android.locationResponse
 import maestro_android.tapResponse
 import maestro_android.viewHierarchyResponse
 import org.junit.Test
@@ -101,6 +102,16 @@ class Service(
         )
 
         responseObserver.onNext(tapResponse {})
+        responseObserver.onCompleted()
+    }
+
+    override fun location(
+        request: MaestroAndroid.LocationRequest,
+        responseObserver: StreamObserver<MaestroAndroid.LocationResponse>,
+    ) {
+        Log.d("Maestro", "Setting location ${request.latitude}, ${request.longitude}")
+
+        responseObserver.onNext(locationResponse {})
         responseObserver.onCompleted()
     }
 }

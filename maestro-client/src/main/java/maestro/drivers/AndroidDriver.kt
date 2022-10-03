@@ -36,6 +36,7 @@ import maestro.android.AndroidAppFiles
 import maestro.android.asManifest
 import maestro_android.MaestroDriverGrpc
 import maestro_android.deviceInfoRequest
+import maestro_android.locationRequest
 import maestro_android.tapRequest
 import maestro_android.viewHierarchyRequest
 import okio.Sink
@@ -305,7 +306,12 @@ class AndroidDriver(
     }
 
     override fun setLocation(latitude: Double, longitude: Double) {
-        TODO("Not yet implemented")
+        blockingStub.location(
+            locationRequest {
+                this.latitude = latitude
+                this.longitude = longitude
+            }
+        ) ?: throw IllegalStateException("Response can't be null")
     }
 
     private fun mapHierarchy(node: Node): TreeNode {

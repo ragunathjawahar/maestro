@@ -10,6 +10,7 @@ service MaestroDriver {
 
   rpc tap(TapRequest) returns (TapResponse) {}
 
+  rpc location(LocationRequest) returns (LocationResponse) {}
 }
 
 // Device info
@@ -35,3 +36,11 @@ message TapRequest {
 }
 
 message TapResponse {}
+
+// Location
+message LocationRequest {
+  double latitude = 1;
+  double longitude = 2;
+}
+
+message LocationResponse {}
