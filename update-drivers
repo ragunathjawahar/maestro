@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+./gradlew :maestro-android:assemble :maestro-android:assembleAndroidTest
+mv ./maestro-android/build/outputs/apk/androidTest/debug/maestro-android-debug-androidTest.apk ./maestro-client/src/main/resources/maestro-server.apk
+mv ./maestro-android/build/outputs/apk/debug/maestro-android-debug.apk ./maestro-client/src/main/resources/maestro-app.apk
