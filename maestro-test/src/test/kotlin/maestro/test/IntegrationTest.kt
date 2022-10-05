@@ -1439,7 +1439,7 @@ class IntegrationTest {
         val driver = driver {
         }
 
-        driver.addInstalledApp("com.example.app")
+        driver.addInstalledApp("com.google.android.apps.maps")
 
         // When
         Maestro(driver).use {
@@ -1450,8 +1450,8 @@ class IntegrationTest {
         // No test failure
         driver.assertEvents(
             listOf(
-                Event.LaunchApp("com.example.app"),
-                Event.SetLocation(12.5266, 78.2150),
+                Event.LaunchApp("com.google.android.apps.maps"),
+                Event.SetLocation(59.436962, 24.753574),
             )
         )
     }
