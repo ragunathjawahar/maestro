@@ -307,12 +307,15 @@ class AndroidDriver(
     }
 
     override fun setLocation(latitude: Double, longitude: Double) {
+        val serverAppPackageId = "dev.mobile.maestro"
+        dadb.shell("appops set $serverAppPackageId android:mock_location allow")
         blockingStub.location(
             locationRequest {
                 this.latitude = latitude
                 this.longitude = longitude
             }
         ) ?: throw IllegalStateException("Response can't be null")
+        dadb.shell("db shell appops set $serverAppPackageId android:mock_location deny")
     }
 
     private fun mapHierarchy(node: Node): TreeNode {

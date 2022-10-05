@@ -54,6 +54,9 @@ class Service(
     private val uiDevice: UiDevice,
     private val uiAutomation: UiAutomation,
 ) : MaestroDriverGrpc.MaestroDriverImplBase() {
+    companion object {
+        private const val TAG = "Maestro"
+    }
 
     override fun deviceInfo(
         request: MaestroAndroid.DeviceInfoRequest,
@@ -74,7 +77,7 @@ class Service(
     ) {
         val stream = ByteArrayOutputStream()
 
-        Log.d("Maestro", "Requesting view hierarchy")
+        Log.d(TAG, "Requesting view hierarchy")
         val ms = measureTimeMillis {
             ViewHierarchy.dump(
                 uiDevice,
@@ -82,7 +85,7 @@ class Service(
                 stream
             )
         }
-        Log.d("Maestro", "View hierarchy received in $ms ms")
+        Log.d(TAG, "View hierarchy received in $ms ms")
 
         responseObserver.onNext(
             viewHierarchyResponse {
@@ -109,9 +112,18 @@ class Service(
         request: MaestroAndroid.LocationRequest,
         responseObserver: StreamObserver<MaestroAndroid.LocationResponse>,
     ) {
-        Log.d("Maestro", "Setting location ${request.latitude}, ${request.longitude}")
+        Log.d(TAG, "Setting location (${request.latitude}, ${request.longitude})")
 
-        responseObserver.onNext(locationResponse {})
-        responseObserver.onCompleted()
+        try {
+            val context = InstrumentationRegistry.getInstrumentation().context
+            MaestroLocationProvider(context).setLocation(request.latitude, request.longitude)
+            Log.d(TAG, "Location set successfully (${request.latitude}, ${request.longitude}).")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error setting location", e)
+            responseObserver.onError(e)
+        } finally {
+            responseObserver.onNext(locationResponse {})
+            responseObserver.onCompleted()
+        }
     }
 }
