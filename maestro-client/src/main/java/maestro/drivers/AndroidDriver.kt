@@ -71,6 +71,7 @@ class AndroidDriver(
     }
 
     override fun open() {
+        uninstallMaestroApks()
         installMaestroApks()
 
         instrumentationSession = dadb.openShell()
