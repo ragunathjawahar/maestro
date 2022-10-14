@@ -1,7 +1,7 @@
 appId: com.google.android.apps.maps
 ---
-- launchApp:
-    appId: com.google.android.apps.maps
 - setLocation:
     latitude: 59.436962
     longitude: 24.753574
+- launchApp:
+      appId: com.google.android.apps.maps
